@@ -7,6 +7,7 @@ const taskSchema = new mongoose.Schema({
     tag_id: { type: String, required: true, default: 0 },
     finished: { type: Boolean, required: true, default: false },
     status: { type: Boolean, required: true, default: false },
+    days_of_week: { type: Array, required: true, "default": [] },//Put day 0 to Domingo, 1 to Monday...
     start_date: { type: Date, required: true },
     end_date: { type: Date, required: true },
     start_time: { type: String, required: true },
