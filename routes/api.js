@@ -17,7 +17,7 @@ mongoose.connect(db, { useNewUrlParser: true, useUnifiedTopology: true }, err =>
 })
 
 router.get('/', (req, res) => {
-	res.send('from API route')
+	res.send({ "message": "Você está na rota /api. Leia a doc para mais detalhes" })
 })
 
 //TASK
@@ -32,6 +32,31 @@ router.get('/tasks', (req, res) => {
 			console.log('Error in retrieving tasks list :' + err);
 		}
 	}).sort({ date: 'desc' });
+})
+//TASK
+router.get('/tasks/daily/:user_uid/:date', (req, res) => {
+	var user_uid = req.params.user_uid;
+	var date = req.params.date;
+
+	//params accepted tag_id e finished
+	Task.find(
+		({ user_uid: user_uid },
+		{
+			$and: [
+				{ start_date: { $lte: new Date(date) } },
+				{ end_date: { $gte: new Date(date) } }
+			]
+		},
+		{ days_of_week: new Date(date).getDay() }),
+		(err, data) => {
+			if (!err) {
+				res.status(200).send(data)
+			}
+			else {
+				res.status(500).send({ "error": "Error in retrieving tasks list :'" + err })
+				console.log('Error in retrieving tasks list :' + err);
+			}
+		}).sort({ date: 'desc' });
 })
 //Get one task
 router.get('/task/:id', (req, res) => {
