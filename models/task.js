@@ -1,5 +1,4 @@
 const mongoose = require('mongoose')
-const Schema = mongoose.Schema
 
 const taskSchema = new mongoose.Schema({
     user_uid: { type: String, required: true }, //UID

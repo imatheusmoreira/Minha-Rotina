@@ -1,5 +1,4 @@
 const mongoose = require('mongoose')
-const Schema = mongoose.Schema
 
 //Interface that represents tags created by user
 const tagSchema = new mongoose.Schema({
