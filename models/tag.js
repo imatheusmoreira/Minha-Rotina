@@ -8,4 +8,4 @@ const tagSchema = new mongoose.Schema({
     created_at: { type: Date, default: Date.now }
 });
 
-module.exports = mongoose.model('tag', tagSchema, 'tags')
+module.exports = mongoose.model('Tag', tagSchema, 'tags')

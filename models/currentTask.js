@@ -8,4 +8,4 @@ const currentTasksSchema = new mongoose.Schema({
     created_at: { type: Date, default: Date.now }
 });
 
-module.exports = mongoose.model('currentTask', currentTasksSchema, 'currentTasks')
+module.exports = mongoose.model('CurrentTask', currentTasksSchema, 'currentTasks')

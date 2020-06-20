@@ -15,4 +15,4 @@ const taskSchema = new mongoose.Schema({
     created_at: { type: Date, default: Date.now }
 });
 
-module.exports = mongoose.model('task', taskSchema, 'tasks')
+module.exports = mongoose.model('Task', taskSchema, 'tasks')
