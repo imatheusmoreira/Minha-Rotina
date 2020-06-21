@@ -1,5 +1,6 @@
 const express = require('express')
 const router = express.Router()
+
 const Task = require('../models/Task')
 const TaskDetails = require('../models/TaskDetails')
 const Tag = require('../models/Tag')
@@ -20,7 +21,8 @@ router.get('/', (req, res) => {
 	res.send({ "message": "Você está na rota /api. Leia a doc para mais detalhes" })
 })
 
-//TASK
+//= TASKS ===========================
+//GET - Return all tasks
 router.get('/tasks', (req, res) => {
 	//params accepted tag_id e finished
 	Task.find(req.query, (err, data) => {
@@ -33,12 +35,10 @@ router.get('/tasks', (req, res) => {
 		}
 	}).sort({ date: 'desc' });
 })
-//TASK
+//GET - DAILY TASKS - user_uid and selected date
 router.get('/tasks/daily/:user_uid/:date', (req, res) => {
 	var user_uid = req.params.user_uid;
 	var date = req.params.date;
-
-	//params accepted tag_id e finished
 	Task.find(
 		({ user_uid: user_uid },
 		{
@@ -58,7 +58,7 @@ router.get('/tasks/daily/:user_uid/:date', (req, res) => {
 			}
 		}).sort({ date: 'desc' });
 })
-//Get one task
+//GET - Return one task by id
 router.get('/task/:id', (req, res) => {
 	Task.findOne({ _id: req.params.id }, (err, task) => {
 		if (err) {
@@ -85,7 +85,7 @@ router.get('/task/:id', (req, res) => {
 		}
 	});
 })
-//Save a task
+//PUT - Save a task
 router.put('/task', (req, res) => {
 	let taskData = req.body.task
 	let task = new Task(taskData)
@@ -112,7 +112,7 @@ router.put('/task', (req, res) => {
 		}
 	})
 })
-//update
+//POST - Update a task
 router.post('/task', (req, res) => {
 	let taskData = req.body.task
 	let task = new Task(taskData)
@@ -138,7 +138,7 @@ router.post('/task', (req, res) => {
 		}
 	});
 })
-//change start stop - falta só atualizar o current task
+//GET - Change start stop - falta só atualizar o current task
 router.get('/task/change/status/:id/:status', (req, res) => {
 	Task.findOne({ _id: req.params.id }, (error, task) => {
 		if (error) {
@@ -160,7 +160,25 @@ router.get('/task/change/status/:id/:status', (req, res) => {
 	})
 })
 
-//Remove a task and details
+//GET - Change finished (true or false)
+router.get('/task/change/finished/:id/:finished', (req, res) => {
+	Task.findOne({ _id: req.params.id }, (error, task) => {
+		if (error) {
+			console.log(error)
+			res.status(500).send({ "error": "Error getting task. See logs for more details" })
+		} else {
+			Task.findByIdAndUpdate({ _id: req.params.id }, { finished: req.params.finished }, (error1, updatedTask) => {
+				if (error1) {
+					res.status(500).send({ "error": error1.message })
+				} else {
+					res.status(200).send(updatedTask)
+				}
+			});			
+		}
+	})
+})
+
+//DELETE - Remove a task and details
 router.delete('/task/:id', (req, res) => {
 	var task_id = req.params.id;
 	Task.findByIdAndRemove(task_id, (err1, doc) => {
@@ -178,8 +196,8 @@ router.delete('/task/:id', (req, res) => {
 	});
 })
 
-//TAG
-//Save a tag
+//= TAG ===========================
+//GET - Return all tags (support querys after ?)
 router.get('/tags', (req, res) => {
 	Tag.find(req.query, (err, data) => {
 		if (!err) {
@@ -191,7 +209,7 @@ router.get('/tags', (req, res) => {
 		}
 	}).sort({ date: 'desc' });
 })
-//Save a tag
+//POST - Save a tag
 router.post('/tag', (req, res) => {
 	let tagData = req.body
 	let tag = new Tag(tagData)
@@ -203,7 +221,7 @@ router.post('/tag', (req, res) => {
 		}
 	})
 })
-//Remove a tag
+//DELETE - Remove a tag
 router.delete('/tag/:id', (req, res) => {
 	Tag.findByIdAndRemove(req.params.id, (err, doc) => {
 		if (!err) {
