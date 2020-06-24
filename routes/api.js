@@ -3,7 +3,7 @@ const router = express.Router()
 
 const Task = require('../models/Task')
 const TaskDetails = require('../models/TaskDetails')
-const Tag = require('../models/Tag')
+const Category = require('../models/Category')
 
 const mongoose = require('mongoose')
 const db = "mongodb+srv://tarefas:yrIuRZZA2lI4LQrT@cluster0-pqhy1.mongodb.net/tasksdb?retryWrites=true&w=majority"
@@ -24,7 +24,7 @@ router.get('/', (req, res) => {
 //= TASKS ===========================
 //GET - Return all tasks
 router.get('/tasks', (req, res) => {
-	//params accepted tag_id e finished
+	//params accepted category_id e finished
 	Task.find(req.query, (err, data) => {
 		if (!err) {
 			res.status(200).send(data)
@@ -196,38 +196,38 @@ router.delete('/task/:id', (req, res) => {
 	});
 })
 
-//= TAG ===========================
-//GET - Return all tags (support querys after ?)
-router.get('/tags', (req, res) => {
-	Tag.find(req.query, (err, data) => {
+//= Category ===========================
+//GET - Return all categories (support querys after ?)
+router.get('/categories', (req, res) => {
+	Category.find(req.query, (err, data) => {
 		if (!err) {
 			res.status(200).send(data)
 		}
 		else {
-			res.status(500).send({ "error": "Error in retrieving tags list :'" + err })
-			console.log('Error in retrieving tags list :' + err);
+			res.status(500).send({ "error": "Error in retrieving categories list :'" + err })
+			console.log('Error in retrieving categories list :' + err);
 		}
 	}).sort({ date: 'desc' });
 })
-//POST - Save a tag
-router.post('/tag', (req, res) => {
-	let tagData = req.body
-	let tag = new Tag(tagData)
-	tag.save((error, registeredTag) => {
+//POST - Save a category
+router.post('/category', (req, res) => {
+	let categoryData = req.body
+	let category = new Category(categoryData)
+	category.save((error, registeredCategory) => {
 		if (error) {
 			console.log(error)
 		} else {
-			res.status(200).send(registeredTag)
+			res.status(200).send(registeredCategory)
 		}
 	})
 })
-//DELETE - Remove a tag
-router.delete('/tag/:id', (req, res) => {
-	Tag.findByIdAndRemove(req.params.id, (err, doc) => {
+//DELETE - Remove a category
+router.delete('/category/:id', (req, res) => {
+	Category.findByIdAndRemove(req.params.id, (err, doc) => {
 		if (!err) {
-			res.status(200).send({ "message": "The tag has been removed" })
+			res.status(200).send({ "message": "The category has been removed" })
 		} else {
-			res.status(404).send({ "error": "Error in tag delete :" + err })
+			res.status(404).send({ "error": "Error in category delete :" + err })
 		}
 	});
 })

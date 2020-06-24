@@ -3,7 +3,7 @@ const mongoose = require('mongoose')
 const taskSchema = new mongoose.Schema({
     user_uid: { type: String, required: true }, //UID
     name: { type: String, required: true },
-    tag_id: { type: String, required: true, default: 0 },
+    category_id: { type: String, required: true, default: 0 },
     finished: { type: Boolean, required: true, default: false },
     status: { type: Boolean, required: true, default: false },
     days_of_week: { type: Array, required: true, "default": [] },//Put day 0 to Domingo, 1 to Monday...
