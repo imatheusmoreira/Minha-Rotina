@@ -43,22 +43,20 @@ router.get('/tasks/daily/:user_uid/:date', (req, res) => {
 		({
 			user_uid: user_uid,
 			$and: [
-				{ start_date: { $lte: new Date(date) } },
-				{ end_date: { $gte: new Date(date) } }
+				{ start_date: { $lte: new Date(date).toISOString() } },
+				{ end_date: { $gte: new Date(date).toISOString() } }
 			],
 			days_of_week: { $all: [new Date(date).getUTCDay() + 1] }
 		}),
 		(err, data) => {
-			if (!err) {
-				console.log("uid: " + user_uid);
-				
+			if (!err) {		
 				res.status(200).send(data)
 			}
 			else {
 				res.status(500).send({ "error": "Error in retrieving tasks list :'" + err })
 				console.log('Error in retrieving tasks list :' + err);
 			}
-		}).sort({ date: 'desc' });
+		}).sort({ start_time: 'desc' });
 })
 //GET - Return one task by id
 router.get('/task/:id', (req, res) => {
