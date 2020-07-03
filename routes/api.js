@@ -31,7 +31,6 @@ router.get('/tasks', (req, res) => {
 		}
 		else {
 			res.status(500).send({ "error": "Error in retrieving tasks list :'" + err })
-			console.log('Error in retrieving tasks list :' + err);
 		}
 	}).sort({ date: 'desc' });
 })
@@ -39,6 +38,7 @@ router.get('/tasks', (req, res) => {
 router.get('/tasks/daily/:user_uid/:date', (req, res) => {
 	var user_uid = req.params.user_uid;
 	var date = req.params.date;
+	
 	Task.find(
 		({ user_uid: user_uid },
 		{
@@ -47,7 +47,7 @@ router.get('/tasks/daily/:user_uid/:date', (req, res) => {
 				{ end_date: { $gte: new Date(date) } }
 			]
 		},
-		{ days_of_week: new Date(date).getDay() }),
+		{ days_of_week: { $all : [new Date(date).getUTCDay() + 1]} }),
 		(err, data) => {
 			if (!err) {
 				res.status(200).send(data)
