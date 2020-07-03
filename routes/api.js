@@ -40,16 +40,18 @@ router.get('/tasks/daily/:user_uid/:date', (req, res) => {
 	var date = req.params.date;
 	
 	Task.find(
-		({ user_uid: user_uid },
-		{
+		({
+			user_uid: user_uid,
 			$and: [
 				{ start_date: { $lte: new Date(date) } },
 				{ end_date: { $gte: new Date(date) } }
-			]
-		},
-		{ days_of_week: { $all : [new Date(date).getUTCDay() + 1]} }),
+			],
+			days_of_week: { $all: [new Date(date).getUTCDay() + 1] }
+		}),
 		(err, data) => {
 			if (!err) {
+				console.log("uid: " + user_uid);
+				
 				res.status(200).send(data)
 			}
 			else {
