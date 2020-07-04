@@ -183,7 +183,7 @@ router.delete('/task/:id', (req, res) => {
 	var task_id = req.params.id;
 	Task.findByIdAndRemove(task_id, (err1, doc) => {
 		if (!err1) {
-			Task.findOneAndRemove({ task_id: task_id }, (err2, doc) => {
+			TaskDetails.findOneAndRemove({ task_id: task_id }, (err2, doc) => {
 				if (!err2) {
 					res.status(200).send({ "message": "The task has been removed" })
 				} else {
