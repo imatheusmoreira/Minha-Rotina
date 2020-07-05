@@ -11,7 +11,7 @@ const taskSchema = new mongoose.Schema({
     end_date: { type: Date, required: true },
     start_time: { type: String, required: true },
     end_time: { type: String, required: true },
-    reminder: { type: number, required: true, default: 0 },
+    reminder: { type: Number, required: true, default: 0 },
     created_at: { type: Date, default: Date.now }
 });
 
